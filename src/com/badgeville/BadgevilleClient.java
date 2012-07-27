@@ -37,8 +37,6 @@ public class BadgevilleClient extends Activity {
 		}
 	};
 	
-	
-
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main); 
@@ -46,20 +44,11 @@ public class BadgevilleClient extends Activity {
 		BVHelper helper = new BVHelper("staging.badgeville.com",
 				"e020e02a4c076a06eb6a2786a0700fbb", mHandler);
 		
-//		String deleteId = "50089a89a768650cb300012b";
-//		helper.delete(BVHelper.ACTIVITY_DEFINITIONS, deleteId);
-//		data.put("site_id", "<site_id>");
-//		data.put("name", "Reporter");
-//		data.put("selector", "{\"verb\":\"vote\"}");
-//		data.put("adjustment", ":5");
-		
 		HashMap<String, String> data = new HashMap<String, String>();
-		data.put("reward_definition[name]", "Troubleshoot");
-		data.put("reward_definition[reward_template]", 
-				"%7B%22message%22%3A%22Awesome%22%7D");
+		data.put("user[name]", "Example");
+		data.put("user[email]", "user@badgeville.com");
 		
-		String objectId = "50107480a76865045b00000f";
-		helper.update(BVHelper.REWARD_DEFINTIONS, objectId, data);
+		helper.create(BVHelper.USERS, data);
 		
 		Log.e("HASHMAP CHECK", data.toString());
 	}

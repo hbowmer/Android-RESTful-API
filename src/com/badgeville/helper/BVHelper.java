@@ -85,34 +85,6 @@ public class BVHelper {
 		
 		mHttpHelper.performRequest(HTTPHelper.METHOD_POST, url, post);
 	}
-		
-//		if(objectName.equals(ACTIVITIES)) {
-//			mHttpHelper.createActivities(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(ACTIVITY_DEFINITIONS)) {
-//			mHttpHelper.createActivityDefinitions(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(LEADERBOARDS)) {
-//			mHttpHelper.createLeaderboards(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(MISSIONS)) {
-//			mHttpHelper.createMissions(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(PLAYERS)) {
-//			mHttpHelper.createPlayers(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(REWARDS)) {
-//			mHttpHelper.createRewards(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(REWARD_DEFINTIONS)) {
-//			mHttpHelper.createRewardDefinitions(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(SITE_CONTENTS)) {
-//			mHttpHelper.createSiteContents(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(SITES)) {
-//			mHttpHelper.createSites(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(TEAMS)) {
-//			mHttpHelper.createTeams(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(TRACKS)) {
-//			mHttpHelper.createTracks(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(UNITS)) {
-//			mHttpHelper.createUnits(HTTPHelper.METHOD_POST, url, params);
-//		} else if(objectName.equals(USERS)) {
-//			mHttpHelper.createUsers(HTTPHelper.METHOD_POST, url, params);
-//		}
 
 	/**
 	 * Reads the object with the specified ID.
