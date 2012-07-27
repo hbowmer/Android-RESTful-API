@@ -22,18 +22,22 @@ public class BadgevilleClient extends Activity {
 
 	private final Handler mHandler = new Handler() {
 		public void handleMessage(final Message msg) {
-			String responseString = msg.getData().getString("RESPONSE");
+			String responseString = 
+					msg.getData().getString("RESPONSE");
 			try {
-				JSONObject responseJson = new JSONObject(responseString);
 				// Do something!
+				JSONObject responseJson = new JSONObject(responseString);
 				Toast.makeText(BadgevilleClient.this, responseJson.toString(), Toast.LENGTH_LONG).show();
 				Log.i("RESPONSE JSON", responseJson.toString());
 			} catch (JSONException je) {
 				// Handle!
-				Toast.makeText(BadgevilleClient.this, responseString, Toast.LENGTH_LONG).show();
+				Toast.makeText(BadgevilleClient.this, 
+						responseString, Toast.LENGTH_LONG).show();
 			}
 		}
 	};
+	
+	
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,22 +46,21 @@ public class BadgevilleClient extends Activity {
 		BVHelper helper = new BVHelper("staging.badgeville.com",
 				"e020e02a4c076a06eb6a2786a0700fbb", mHandler);
 		
+//		String deleteId = "50089a89a768650cb300012b";
+//		helper.delete(BVHelper.ACTIVITY_DEFINITIONS, deleteId);
+//		data.put("site_id", "<site_id>");
+//		data.put("name", "Reporter");
+//		data.put("selector", "{\"verb\":\"vote\"}");
+//		data.put("adjustment", ":5");
 		
-//		String deleteId = "500491f5a768650207000001";
-//		helper.delete(BVHelper.USERS, deleteId);
+		HashMap<String, String> data = new HashMap<String, String>();
+		data.put("reward_definition[name]", "Troubleshoot");
+		data.put("reward_definition[reward_template]", 
+				"%7B%22message%22%3A%22Awesome%22%7D");
 		
-		HashMap<String, HashMap> params = new HashMap<String, HashMap>();
-		HashMap<String, String> inside = new HashMap<String, String>();
-		inside.put("email", "jimmy@badgeville.com");
-		inside.put("site", "holtbow.com");
-		inside.put("first_name", "Jimmy");
-		inside.put("last_name", "Zhang");
-		inside.put("display_name", "jayjzee23");
-		inside.put("nickname", "Jingshen");
-		params.put("player", inside);
+		String objectId = "50107480a76865045b00000f";
+		helper.update(BVHelper.REWARD_DEFINTIONS, objectId, data);
 		
-		Log.e("HASHMAP CHECK", inside.toString());
-		
-		helper.create(BVHelper.PLAYERS, inside);
+		Log.e("HASHMAP CHECK", data.toString());
 	}
 }

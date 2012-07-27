@@ -1,12 +1,10 @@
 package com.badgeville.helper;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.json.JSONObject;
-
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Helper class for invoking Badgeville REST APIs.
@@ -18,12 +16,12 @@ public class BVHelper {
 
 	public static final String ACTIVITIES = "activities";
 	public static final String ACTIVITY_DEFINITIONS = "activity_definitions";
-	public static final String MISSIONS = "groups";
 	public static final String LEADERBOARDS = "leaderboards";
+	public static final String MISSIONS = "groups";
 	public static final String PLAYERS = "players";
 	public static final String REWARDS = "rewards";
 	public static final String REWARD_DEFINTIONS = "reward_definitions";
-	public static final String SITE_CONTENTS = "site_content";
+	public static final String SITE_CONTENTS = "site_contents";
 	public static final String SITES = "sites";
 	public static final String TEAMS = "teams";
 	public static final String TRACKS = "tracks";
@@ -68,34 +66,53 @@ public class BVHelper {
 	 */
 	public void create(String objectName, Map<String, String> params) {
 		String url = mUrlBase + objectName + ".json";
-		if(objectName.equals(ACTIVITIES)) {
-			mHttpHelper.createActivities(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(ACTIVITY_DEFINITIONS)) {
-			mHttpHelper.createActivityDefinitions(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(LEADERBOARDS)) {
-			mHttpHelper.createLeaderboards(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(MISSIONS)) {
-			mHttpHelper.createMissions(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(PLAYERS)) {
-			mHttpHelper.createPlayers(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(REWARDS)) {
-			mHttpHelper.createRewards(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(REWARD_DEFINTIONS)) {
-			mHttpHelper.createRewardDefinitions(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(SITE_CONTENTS)) {
-			mHttpHelper.createSiteContents(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(SITES)) {
-			mHttpHelper.createSites(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(TEAMS)) {
-			mHttpHelper.createTeams(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(TRACKS)) {
-			mHttpHelper.createTracks(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(UNITS)) {
-			mHttpHelper.createUnits(HTTPHelper.METHOD_POST, url, params);
-		} else if(objectName.equals(USERS)) {
-			mHttpHelper.createUsers(HTTPHelper.METHOD_POST, url, params);
+		
+		StringBuffer paramBuf = new StringBuffer();
+		if (params != null && params.size() > 0) {
+			Iterator<Map.Entry<String, String>> iter = params.entrySet()
+					.iterator();
+			while (iter.hasNext()) {
+				Map.Entry<String, String> param = (Map.Entry<String, String>) iter
+						.next();
+				paramBuf.append(param.getKey() + "=" + param.getValue());
+				if (iter.hasNext()) {
+					paramBuf.append('&');
+				}
+			}
 		}
+		Log.i("PARAM STRING CHECK", paramBuf.toString());
+		String post = paramBuf.toString();
+		
+		mHttpHelper.performRequest(HTTPHelper.METHOD_POST, url, post);
 	}
+		
+//		if(objectName.equals(ACTIVITIES)) {
+//			mHttpHelper.createActivities(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(ACTIVITY_DEFINITIONS)) {
+//			mHttpHelper.createActivityDefinitions(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(LEADERBOARDS)) {
+//			mHttpHelper.createLeaderboards(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(MISSIONS)) {
+//			mHttpHelper.createMissions(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(PLAYERS)) {
+//			mHttpHelper.createPlayers(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(REWARDS)) {
+//			mHttpHelper.createRewards(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(REWARD_DEFINTIONS)) {
+//			mHttpHelper.createRewardDefinitions(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(SITE_CONTENTS)) {
+//			mHttpHelper.createSiteContents(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(SITES)) {
+//			mHttpHelper.createSites(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(TEAMS)) {
+//			mHttpHelper.createTeams(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(TRACKS)) {
+//			mHttpHelper.createTracks(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(UNITS)) {
+//			mHttpHelper.createUnits(HTTPHelper.METHOD_POST, url, params);
+//		} else if(objectName.equals(USERS)) {
+//			mHttpHelper.createUsers(HTTPHelper.METHOD_POST, url, params);
+//		}
 
 	/**
 	 * Reads the object with the specified ID.
@@ -128,8 +145,9 @@ public class BVHelper {
 	 */
 	public void update(String objectName, String objectId,
 			Map<String, String> params) {
-		String url = mUrlBase + objectName + "/" + objectId + ".json";
-//		mHttpHelper.performRequest(HTTPHelper.METHOD_PUT, url, params);
+		String url = mUrlBase + objectName + "/" + objectId + ".json"
+				+ buildParamString(params);
+		mHttpHelper.performRequest(HTTPHelper.METHOD_PUT, url, null);
 	}
 
 	/**
@@ -168,6 +186,7 @@ public class BVHelper {
 				}
 			}
 		}
+		Log.i("PARAM STRING CHECK", paramBuf.toString());
 		return paramBuf.toString();
 	}
 

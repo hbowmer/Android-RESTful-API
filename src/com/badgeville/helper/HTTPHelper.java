@@ -5,18 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -30,7 +25,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
@@ -91,6 +85,9 @@ public class HTTPHelper {
 	public HTTPHelper(final Handler handler) {
 		mResponseHandler = HTTPHelper.getResponseHandlerInstance(handler);
 	}
+	
+	
+	/*   CODE BEYOND THIS POINT NEEDS TO BE REVIEWED
 
 	
 	/**
@@ -109,7 +106,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createActivities(final String method, final String url,
 			final Map<String, String> params) {
 		
@@ -144,13 +141,14 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createActivityDefinitions(final String method, final String url,
 			final Map<String, String> params) {
 		String post = "activity_definition[site_id]=" +params.get("site_id")+
 				"&activity_definition[name]=" +params.get("name")+
 				"&activity_definition[selector]=" +params.get("selector")+
-				"&activity_definition[adjustment]=" +params.get("adjustment");
+				"&activity_definition[adjustment]={\"points\"" +params.get("adjustment")
+				+"}";
 		Log.i("POST CHECK", post);
 		
 		performRequest(method, url, post);
@@ -174,7 +172,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createLeaderboards(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -223,18 +221,30 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createMissions(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
 		String adjustment = "";
+		String active = "";
+		String repeatable = "";
+		String enable_rewards = "";
 		
 		if(params.get("adjustment") != null) {
 			adjustment = "&group[adjustment]=" +params.get("adjustment");
 		}
+		if(params.get("active") == "true") {
+			active = "&group[active]=true";
+		}
+		if(params.get("repeatable") == "true") {
+			repeatable = "&group[repeatable]=true";
+		}
+		if(params.get("enable_rewards") == "true") {
+			enable_rewards = "&group[enable_rewards]=true";
+		}
 		
 		post = "group[site_id]=" +params.get("site_id")+ "&group[name]=" +params.get("name")+
-				adjustment;
+				active+repeatable+enable_rewards+adjustment;
 		Log.i("POST CHECK", post);
 		
 		performRequest(method, url, post);
@@ -269,7 +279,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createPlayers(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -342,7 +352,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createRewards(final String method, final String url,
 			final Map<String, String> params) {
 		String post = "reward[site_id]=" +params.get("site_id")+ "&reward[player_id]="
@@ -375,7 +385,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createRewardDefinitions(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -413,7 +423,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createSiteContents(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -458,7 +468,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createSites(final String method, final String url,
 			final Map<String, String> params) {
 		String post = "site[name]=" +params.get("name")+ "&site[url]=" +params.get("url");
@@ -486,7 +496,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createTeams(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -518,7 +528,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createTracks(final String method, final String url,
 			final Map<String, String> params) {
 		String post = "track[site_id]=" +params.get("site_id")+ "&track[label]="
@@ -545,7 +555,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createUnits(final String method, final String url,
 			final Map<String, String> params) {
 		String post = "site=" +params.get("site")+ "&type=" +params.get("type")+
@@ -572,7 +582,7 @@ public class HTTPHelper {
 	 * 			URL to request from
 	 * @param params
 	 * 			Request parameters
-	 */
+	 *
 	public void createUsers(final String method, final String url,
 			final Map<String, String> params) {
 		String post = null;
@@ -587,6 +597,8 @@ public class HTTPHelper {
 		
 		performRequest(method, url, post);
 	}
+	
+	*/
 	
 	
 	/**
